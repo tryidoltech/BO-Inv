@@ -2,18 +2,20 @@ import React, { useEffect, useState } from "react";
 import TableDetail from "./Table";
 import TransactionTable from "./TransactionTable";
 
-const Bill = ({a}) => {
-    const [data, setdata] = useState("");
-    useEffect(() => {
-    const d = JSON.parse(localStorage.getItem("data"))
-    console.log(d);
-    setdata(d)
+const Bill = ({data,a}) => {
+    // const [data, setdata] = useState("");
+    // useEffect(() => {
+    // const d = JSON.parse(localStorage.getItem("data"))
+    // console.log(d);
+    // setdata(d)
     
-    }, [])
+    // }, [])
     
   return (
     <div className="w-[60%] mx-auto min-h-screen flex flex-col gap-6 p-10 pb-20 border-2 font-[gilroy]" ref={a}>
-      <div className="w-full h-[20vh] bg-red-400"></div>
+      <div className="w-full h-[2\10vh] bg-red-400">
+        <img src="/Header.png" className="w-full object-cover h-full" alt="" />
+      </div>
       <div className="w-full mx-auto flex ">
         <div className="flex w-full  flex-col text-black text-base gap-0.5'">
           <h1 className="font-extrabold text-4xl pb-2">Tax Invoice</h1>
@@ -56,7 +58,7 @@ const Bill = ({a}) => {
             Vehicle: <span className="font-semibold">#13-3 Hy</span>
           </h1>
         </div>
-        <div className="border-2 h-fit p-6 w-fit">
+        <div className="border-2 h-fit p-6 w-[50%] shrink-0">
           <h1 className="font-extrabold">Invoice To</h1>
           <h1 className="font-extrabold">{data?.value?.invoiceTo}</h1>
           <h3>

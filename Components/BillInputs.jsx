@@ -1,8 +1,11 @@
 import { Button, Form, Input, Select } from "antd";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import TableDetail from "./Table";
 import TransactionTable from "./TransactionTable";
 import { useNavigate } from "react-router";
+import { useDispatch } from "react-redux";
+import { uploadBill } from "../Store/Action/UserAction";
+import Papa from "papaparse";
 
 const BillInputs = () => {
   const [form] = Form.useForm();
@@ -16,7 +19,8 @@ const BillInputs = () => {
   const [description, setdescription] = useState("");
   const [amount, setamount] = useState("");
   const [discount, setdiscount] = useState("");
-const navigate = useNavigate()
+
+  const navigate = useNavigate();
   const onFormLayoutChange = ({ layout }) => {
     setFormLayout(layout);
   };
@@ -46,25 +50,24 @@ const navigate = useNavigate()
     setcategory("");
     settransAmount("");
   };
-
+  const dispatch = useDispatch();
   // Handle form submission
   const onFinish = (values) => {
     const value = {
-        invoiceTo: values.invoiceTo,
-        address: values.address,
-        mobileNo: values.mobileNo,
-        invoiceDate: values.invoiceDate,
-        dueDate: values.dueDate,
-        invoiceStatus: values.invoiceStatus,
-        orderStatus: values.orderStatus
-      };
+      invoiceTo: values.invoiceTo,
+      address: values.address,
+      mobileNo: values.mobileNo,
+      invoiceDate: values.invoiceDate,
+      dueDate: values.dueDate,
+      invoiceStatus: values.invoiceStatus,
+      orderStatus: values.orderStatus,
+    };
     const dets = {
-        value,
-        tableData,
-        transactionData
-    }
-    localStorage.setItem("data",JSON.stringify(dets));
-    navigate("/")
+      value,
+      tableData,
+      transactionData,
+    };
+    dispatch(uploadBill(dets));
   };
 
   const handleChange = (value) => {
@@ -80,6 +83,35 @@ const navigate = useNavigate()
           },
         }
       : null;
+  const csv = useRef(null);
+  const openInput = () => {
+    csv.current.click();
+  };
+
+  const [jsonData, setJsonData] = useState(null);
+  // const [csvFile, setCsvFile] = useState(null);
+
+  // Handle CSV file upload and parse
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    // setCsvFile(file);
+
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        skipEmptyLines: true,
+        complete: function (result) {
+          settableData([...result.data])
+          console.log("Parsed JSON data:", result.data);
+        },
+        error: function (error) {
+          console.error("Error parsing CSV: ", error);
+        },
+      });
+    }
+  };
+
+console.log(tableData);
 
   return (
     <Form
@@ -176,6 +208,16 @@ const navigate = useNavigate()
           <Button type="primary" onClick={addBillValues} className="w-fit">
             Add Values
           </Button>
+          <Button type="primary" onClick={openInput} className="w-fit">
+            Add CSV
+          </Button>
+          <input
+            type="file"
+            accept=".csv"
+            ref={csv}
+            onChange={handleFileUpload}
+            style={{display:"none"}}
+          />
         </div>
         {tableData && tableData?.length > 0 ? (
           <TableDetail data={tableData} />
@@ -195,7 +237,7 @@ const navigate = useNavigate()
           </Form.Item>
           <Form.Item label="Payment Method" name="paymentMethod">
             <Select
-              defaultValue="Cash"
+              // defaultValue="Cash"
               style={{
                 width: "100%",
               }}
@@ -215,7 +257,7 @@ const navigate = useNavigate()
           </Form.Item>
           <Form.Item label="Category" name="transactionCategory">
             <Select
-              defaultValue="Rental Income"
+              // defaultValue="Rental Income"
               style={{
                 width: "100%",
               }}

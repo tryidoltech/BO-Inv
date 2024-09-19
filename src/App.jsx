@@ -1,22 +1,55 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { Route, Routes } from 'react-router'
-import BillPage from '../Page/BillPage'
-import UploadBill from '../Page/UploadBill'
+import { useEffect, useState } from "react";
+import "./App.css";
+import { Route, Routes, useLocation, useNavigate } from "react-router";
+import BillPage from "../Page/BillPage";
+import UploadBill from "../Page/UploadBill";
+import LoginDetails from "../Components/LoginDetail";
+import { useDispatch, useSelector } from "react-redux";
+import { isUser } from "../Store/Action/UserAction"; 
+import { toast } from "react-toastify";
+import { clearError, clearMessage } from "../Store/Reducer/UserReducer";
+import Invoice from "../Page/Invoice";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { isAuthenticated, user, loading, error, message } = useSelector((state) => state.User);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+const location = useLocation()
+  useEffect(() => {
+    dispatch(isUser());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (!loading) {
+      if (isAuthenticated && location.pathname === "/login") {
+        navigate("/");
+      } else if (!isAuthenticated && location.pathname !== "/login") {
+        navigate("/login");
+      }
+    }
+  }, [isAuthenticated, loading, navigate]);
+
+  useEffect(() => {
+    if (message) {
+      toast.success(message);
+      dispatch(clearMessage());
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(clearError());
+    }
+  }, [dispatch, error, message]);
 
   return (
     <>
-     <Routes>
-      <Route path='/' index element={<BillPage/>} />
-      <Route path='/upload' index element={<UploadBill/>} />
-     </Routes>
+      <Routes>
+        <Route path="/" index element={<UploadBill />} />
+        <Route path="/bill/:id" element={<BillPage />} />
+        <Route path="/invoice" element={<Invoice />} />
+        <Route path="/login" element={<LoginDetails />} />
+      </Routes>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
