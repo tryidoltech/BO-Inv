@@ -9,6 +9,7 @@ import { isUser } from "../Store/Action/UserAction";
 import { toast } from "react-toastify";
 import { clearError, clearMessage } from "../Store/Reducer/UserReducer";
 import Invoice from "../Page/Invoice";
+import Dashboard from "../Page/Dashboard";
 
 function App() {
   const { isAuthenticated, user, loading, error, message } = useSelector((state) => state.User);
@@ -43,7 +44,8 @@ const location = useLocation()
   return (
     <>
       <Routes>
-        <Route path="/" index element={<UploadBill />} />
+        <Route path="/" index element={<Dashboard/>} />
+        <Route path="/add/bill" element={<UploadBill/>} />
         <Route path="/bill/:id" element={<BillPage />} />
         <Route path="/invoice" element={<Invoice />} />
         <Route path="/login" element={<LoginDetails />} />
