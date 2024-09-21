@@ -11,8 +11,12 @@ const NavBar = () => {
     navigate("/login")
    }
   return (
-    <div className="w-full h-20 flex items-center justify-between px-20 text-xl  bg-gray-200">
-      <h1>Bill Generator</h1>
+    <div className="w-full h-20 flex items-center justify-between px-20 text-xl  bg-white max-md:px-4 shrink-0">
+      <div className="flex items-center justify-center gap-2">
+      <img src="/blueLogo.png" className="w-20 object-contain h-16" alt="" />
+      <h1 className="max-md:text-sm font-semibold text-base">Bill Generator</h1>
+
+      </div>
       <div className="flex gap-8 text-sm font-semibold">
         <NavLink to={"/"} className="cursor-pointer">
           Add Bill

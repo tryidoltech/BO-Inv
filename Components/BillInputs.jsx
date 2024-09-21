@@ -6,6 +6,7 @@ import { useNavigate } from "react-router";
 import { useDispatch } from "react-redux";
 import { uploadBill } from "../Store/Action/UserAction";
 import Papa from "papaparse";
+import { toast } from "react-toastify";
 
 const BillInputs = () => {
   const [form] = Form.useForm();
@@ -19,13 +20,25 @@ const BillInputs = () => {
   const [description, setdescription] = useState("");
   const [amount, setamount] = useState("");
   const [discount, setdiscount] = useState("");
-
+  const [paidAmount, setpaidAmount] = useState(0);
+  const [orderStatus, setorderStatus] = useState("Completed");
+  const [invoiceStatus, setinvoiceStatus] = useState("Paid");
   const navigate = useNavigate();
   const onFormLayoutChange = ({ layout }) => {
     setFormLayout(layout);
   };
 
   const addBillValues = () => {
+    if (
+      !description ||
+      !amount ||
+      !discount ||
+      discount === 0 ||
+      amount === 0 ||
+      description.length <= 0
+    ) {
+      return toast.error("Please Fill all the details");
+    }
     const dets = {
       description: description,
       amount: amount,
@@ -59,13 +72,16 @@ const BillInputs = () => {
       mobileNo: values.mobileNo,
       invoiceDate: values.invoiceDate,
       dueDate: values.dueDate,
-      invoiceStatus: values.invoiceStatus,
-      orderStatus: values.orderStatus,
+      invoiceStatus: invoiceStatus,
+      orderStatus: orderStatus,
+      vehicleName: values.vehicleName,
+      vehicleNumber: values.vehicleNumber,
     };
     const dets = {
       value,
       tableData,
       transactionData,
+      paidAmount,
     };
     dispatch(uploadBill(dets));
   };
@@ -101,7 +117,7 @@ const BillInputs = () => {
         header: true,
         skipEmptyLines: true,
         complete: function (result) {
-          settableData([...result.data])
+          settableData([...result.data]);
           console.log("Parsed JSON data:", result.data);
         },
         error: function (error) {
@@ -111,16 +127,16 @@ const BillInputs = () => {
     }
   };
 
-console.log(tableData);
+  console.log(tableData);
 
   return (
     <Form
       layout={"vertical"}
       form={form}
-      className="w-[90%]"
+      className="w-[90%] max-md:w-full"
       onFinish={onFinish} // Add this line
     >
-      <div className="w-full grid grid-cols-3 gap-x-3">
+      <div className="w-full grid grid-cols-3 gap-x-3 max-md:grid-cols-2">
         <Form.Item label="Invoice To" name="invoiceTo">
           <Input placeholder="BLUE ONLY CAR RENTAL" type="text" />
         </Form.Item>
@@ -142,10 +158,11 @@ console.log(tableData);
         <Form.Item label="Invoice Status" name="invoiceStatus">
           <Select
             defaultValue="Paid"
+            value={invoiceStatus}
             style={{
               width: "100%",
             }}
-            onChange={handleChange}
+            onChange={(e) => setinvoiceStatus(e)}
             options={[
               {
                 value: "Paid",
@@ -161,10 +178,11 @@ console.log(tableData);
         <Form.Item label="Order Status" name="orderStatus">
           <Select
             defaultValue="Completed"
+            value={orderStatus}
             style={{
               width: "100%",
             }}
-            onChange={handleChange}
+            onChange={(value) => setorderStatus(value)}
             options={[
               {
                 value: "Completed",
@@ -177,10 +195,16 @@ console.log(tableData);
             ]}
           />
         </Form.Item>
+        <Form.Item label="Vehicle Name" name="vehicleName">
+          <Input placeholder="Vehicle Name" type="text" />
+        </Form.Item>
+        <Form.Item label="Vehicle Number" name="vehicleNumber">
+          <Input placeholder="Vehicle Number" type="number" />
+        </Form.Item>
       </div>
-      <div className="w-full ">
+      <div className="w-full">
         <h1 className="font-semibold text-xl pb-4">Add Bill Details</h1>
-        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center">
+        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-3 max-md:gap-x-2">
           <Form.Item label="Description" name="billDescription">
             <Input
               placeholder="Demo Product"
@@ -216,7 +240,7 @@ console.log(tableData);
             accept=".csv"
             ref={csv}
             onChange={handleFileUpload}
-            style={{display:"none"}}
+            style={{ display: "none" }}
           />
         </div>
         {tableData && tableData?.length > 0 ? (
@@ -224,10 +248,18 @@ console.log(tableData);
         ) : (
           ""
         )}
+        <Form.Item label="Paid Amount">
+          <Input
+            placeholder="450"
+            value={paidAmount}
+            onChange={(e) => setpaidAmount(e.target.value)}
+            type="number"
+          />
+        </Form.Item>
       </div>
       <div className="w-full ">
         <h1 className="font-semibold text-xl pb-4">Add Transaction Details</h1>
-        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center">
+        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-2 max-md:gap-x-3">
           <Form.Item label="Date" name="transactionDate">
             <Input
               value={transactionDate}
@@ -255,7 +287,7 @@ console.log(tableData);
               ]}
             />
           </Form.Item>
-          <Form.Item label="Category" name="transactionCategory">
+          <Form.Item label="Category" name="transactionCategory" className="w-full">
             <Select
               // defaultValue="Rental Income"
               style={{
@@ -292,7 +324,7 @@ console.log(tableData);
           ""
         )}
       </div>
-      <Form.Item {...buttonItemLayout}>
+      <Form.Item {...buttonItemLayout} className="max-md:translate-x-1/3 max-md:mt-4 max-md:text-2xl">
         <Button type="primary" htmlType="submit">
           Submit
         </Button>

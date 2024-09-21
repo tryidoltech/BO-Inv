@@ -1,3 +1,37 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media print {
+    /* Reset the transform for printing */
+    .print-bill {
+      transform: none !important;
+      width: 100% !important; /* Make sure the width is full on print */
+      height: auto;
+    }
+    
+    /* Additional styles to ensure print layout fits the page */
+    body {
+      -webkit-print-color-adjust: exact; /* Ensures colors are printed as intended */
+    }
+    
+    /* Hide unnecessary elements */
+    .no-print {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .responsive-bill {
+      transform: none;
+      width: 100%;
+      padding: 10px;
+      font-size: 0.75rem; /* Adjust font size for better readability on smaller screens */
+    }
+  }
+  @media print {
+    body, html {
+      overflow: visible !important;
+    }
+  }
+  

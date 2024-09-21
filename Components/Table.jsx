@@ -1,13 +1,25 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Space, Table, Tag } from "antd";
 
+const TableDetail = ({ data, paidAmount, name, number }) => {
+  const [invoiceAmount, setinvoiceAmount] = useState(0);
+  const [discountAmount, setdiscountAmount] = useState(0);
+  useEffect(() => {
+    var invoice = 0;
+    var dis = 0;
+    var totalAmnt = 0;
+    data?.map((i) => {
+      invoice += Number(i?.amount);
+      dis += Number(i?.discount);
+    });
+    setinvoiceAmount(invoice);
+    setdiscountAmount(dis);
+  }, [data]);
 
-
-const TableDetail = ({data}) => {
   return (
-    <div>
-      <div class="relative overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-l-2 mx-auto border-gray-300">
+    <div >
+      <div class="relative overflow-x-auto max-md:mt-5 font-[gilroy] max-md:w-fit max-md:overflow-hidden ">
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-l-2 mx-auto border-gray-300 max-md:mx-0">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-t-2 border-gray-300  ">
             <tr>
               <th
@@ -49,34 +61,58 @@ const TableDetail = ({data}) => {
             </tr>
           </thead>
           <tbody>
-            {
-                data?.map((i,index)=>(
-                    <tr class="bg-white border-b ">
-                    <th
-                      scope="row"
-                      class="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap border-r-2 border-b-2 border-gray-300 "
-                    >
-                      {i?.description}
-                    </th>
-                    <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-                      {i?.amount}
-                    </td>
-                    <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-                    {i?.discount}
-
-                    </td>
-                    <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-                      65.00
-                    </td>
-                    <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-                     3.25
-                    </td>
-                    <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 font-semibold text-black text-sm font-[gilroy]">
-                      68.25
-                    </td>
-                  </tr>
-                ))
-            }
+            {data?.map((i, index) => (
+              <tr class="bg-white border-b ">
+                <th
+                  scope="row"
+                  class="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap border-r-2 border-b-2 border-gray-300 "
+                >
+                  {i?.description}
+                </th>
+                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                  {i?.amount}
+                </td>
+                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                  {i?.discount}
+                </td>
+                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                  {Number(i?.amount) - Number(i?.discount)}
+                </td>
+                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                  {((Number(i?.amount) - Number(i?.discount)) * 5) / 100}
+                </td>
+                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 font-semibold text-black text-sm font-[gilroy]">
+                  {Number(i?.amount) -
+                    Number(i?.discount) +
+                    ((Number(i?.amount) - Number(i?.discount)) * 5) / 100}
+                </td>
+              </tr>
+            ))}
+            <tr class="bg-white border-b ">
+              <th
+                scope="row"
+                class="px-6 text-righ4 py-1.5 font-medium text-gray-900 whitespace-nowrap border-r-2 border-b-2 border-gray-300 "
+              >
+                - Rent Vehicle {name} , <br /> Plate Number :(L){number}
+              </th>
+              <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                {invoiceAmount}.00
+              </td>
+              <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                {discountAmount}.00
+              </td>
+              <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                {Number(invoiceAmount) - Number(discountAmount)}
+              </td>
+              <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                {((Number(invoiceAmount) - Number(discountAmount)) * 5) / 100}
+              </td>
+              <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 font-semibold text-black text-sm font-[gilroy]">
+                {Number(invoiceAmount) -
+                  Number(discountAmount) +
+                  ((Number(invoiceAmount) - Number(discountAmount)) * 5) / 100}
+              </td>
+            </tr>
             <tr class="bg-white border-b ">
               <th
                 scope="row"
@@ -85,19 +121,21 @@ const TableDetail = ({data}) => {
                 Invoice Amount
               </th>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-               521.00
+                {invoiceAmount}.00
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-                0.00
+                {discountAmount}.00
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-               545.00
+                {Number(invoiceAmount) - Number(discountAmount)}
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-               27.25
+                {((Number(invoiceAmount) - Number(discountAmount)) * 5) / 100}
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 font-semibold text-black text-sm font-[gilroy]">
-               572.25
+                {Number(invoiceAmount) -
+                  Number(discountAmount) +
+                  ((Number(invoiceAmount) - Number(discountAmount)) * 5) / 100}
               </td>
             </tr>
             <tr class="bg-white border-b ">
@@ -108,19 +146,19 @@ const TableDetail = ({data}) => {
                 Paid Amount
               </th>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-               -
+                -
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
                 -
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-              -
+                -
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-               -
+                -
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 font-semibold text-black text-base">
-               44.75
+                {paidAmount}.00
               </td>
             </tr>
             <tr class="bg-white border-b ">
@@ -131,19 +169,22 @@ const TableDetail = ({data}) => {
                 Remaining Amount
               </th>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-               -
+                -
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
                 -
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-              -
+                -
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-               -
+                -
               </td>
               <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 font-semibold text-black text-base">
-               527.50
+                {Number(invoiceAmount) -
+                  Number(discountAmount) +
+                  ((Number(invoiceAmount) - Number(discountAmount)) * 5) / 100 -
+                  paidAmount}
               </td>
             </tr>
           </tbody>

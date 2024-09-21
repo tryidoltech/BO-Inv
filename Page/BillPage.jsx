@@ -14,16 +14,19 @@ const BillPage = () => {
     const {billData} = useSelector((state)=>state.User);
     useEffect(() => {
       dispatch(getBillById(id));
+      
     }, [])
     
   return (
    <>
-   <NavBar/>
-    <div className="w-full flex flex-col items-center justify-center gap-4 py-8">
+  <div className="w-full relative overflow-hidden">
+  <NavBar/>
+    <div className="w-full flex flex-col items-center justify-center gap-4 py-8 relative max-md:overflow-x-auto">
 
-<Bill data={billData} a = {targetRef}/>
+<Bill data={billData} a = {targetRef}  />
 <Button type='primary' onClick={() => generatePDF(targetRef, {filename: 'bill.pdf'})} className='mx-auto'>Print Bill</Button>
     </div>
+  </div>
    </>
 )
 }
