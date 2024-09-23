@@ -27,13 +27,11 @@ const Bill = ({ data, a }) => {
   
       const startDate = parseDate(data?.value?.startDate);
       const endDate = parseDate(data?.value?.endDate);
-      
-      // Format the dates for display
+
       const invoiceDate = startDate.toLocaleDateString('en-GB');
       const dueDate = endDate.toLocaleDateString('en-GB');
       console.log(invoiceDate, dueDate);
-  
-      // Calculate the difference between dates in milliseconds
+
       if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
         const timeDifference = endDate.getTime() - startDate.getTime();
         const daysDifference = timeDifference / (1000 * 3600 * 24);
@@ -96,7 +94,7 @@ const Bill = ({ data, a }) => {
           <h1>
             Vehicle:{" "}
             <span className="font-semibold">
-              #13-3 {data?.value?.vehicleName} (L) {data?.value?.vehicleNumber}
+              #13-3 {data?.value?.vehicleName} {data?.value?.vehicleNumber}
             </span>
           </h1>
         </div>
