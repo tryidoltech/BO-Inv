@@ -3,6 +3,9 @@ import TableDetail from "./Table";
 import TransactionTable from "./TransactionTable";
 
 const Bill = ({ data, a }) => {
+  const [invoiceId, setinvoiceId] = useState("");
+  const [numberOfDays, setNumberOfDays] = useState(0);
+
   // const [data, setdata] = useState("");
   // useEffect(() => {
   // const d = JSON.parse(localStorage.getItem("data"))
@@ -10,7 +13,26 @@ const Bill = ({ data, a }) => {
   // setdata(d)
 
   // }, [])
+  useEffect(() => {
+    if(data){
 
+      setinvoiceId(data?._id.substring(1, 10));
+      const startDate = new Date(data?.value?.startDate);
+      const endDate = new Date(data?.value?.endDate);
+  
+      // Format the dates for display
+      const invoiceDate = startDate.toLocaleDateString('en-GB');
+      const dueDate = endDate.toLocaleDateString('en-GB');
+      console.log(invoiceDate, dueDate);
+      if (!isNaN(invoiceDate) && !isNaN(dueDate)) {
+        const timeDifference = dueDate - invoiceDate;
+        const daysDifference = timeDifference / (1000 * 3600 * 24);
+        setNumberOfDays(Math.ceil(daysDifference)); // Using Math.ceil to round up
+      }
+    }
+  }, [data])
+  console.log(invoiceId);
+  
   return (
     <div
       className="w-[60%] mx-auto min-h-screen flex flex-col gap-6 p-10 pb-20 border-2 font-[gilroy] max-md:w-[100rem] max-md:h-fit max-md:min-h-screen"
@@ -27,7 +49,7 @@ const Bill = ({ data, a }) => {
             <span className="font-semibold">104127291300003</span>{" "}
           </h1>
           <h1 className="max-md:text-xs">
-            Invoice: <span className="font-semibold">#6747-603 [0209]</span>{" "}
+            Invoice: <span className="font-semibold">#{invoiceId}</span>{" "}
           </h1>
           <h1 className="max-md:text-xs">
             Invoice Date:{" "}
@@ -42,7 +64,7 @@ const Bill = ({ data, a }) => {
           <h1 className="max-md:text-xs">
             {" "}
             Invoice Status:{" "}
-            <span className="font-semibold">{data?.value?.dueDate}</span>{" "}
+            <span className="font-semibold">{data?.value?.invoiceStatus}</span>{" "}
           </h1>
           <h1 className="max-md:text-xs">
             Currency: <span className="font-semibold">AED</span>{" "}
@@ -50,11 +72,11 @@ const Bill = ({ data, a }) => {
           <h1 className="max-md:text-xs">
             Number of Days:{" "}
             <span className="font-semibold">
-              4 Days -- from 2024-08-05 18:20 to 2024-08-09 22:30:00{" "}
+              {numberOfDays} Days -- from {data?.value?.startDate} to {data?.value?.endDate}{" "}
             </span>
           </h1>
           <h1 className="max-md:text-xs">
-            Order:<span className="font-semibold">#6746-602 [0209]</span>
+            Order:<span className="font-semibold">#{invoiceId}</span>
           </h1>
           <h1 className="max-md:text-xs">
             {" "}
@@ -86,7 +108,7 @@ const Bill = ({ data, a }) => {
       />
       <div className="w-full mx-auto flex flex-col gap-1 font-[gilroy]">
         <h1 className="font-extrabold text-2xl">Transactions</h1>
-        <TransactionTable data={data?.transactionData} />
+        <TransactionTable data={data?.transactionData} invoiceId={invoiceId} />
       </div>
       <div className="grid w-full grid-cols-3 gap-2 mx-auto font-extrabold text-lg">
         <div className="flex flex-col">

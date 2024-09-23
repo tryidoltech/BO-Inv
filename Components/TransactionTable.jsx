@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const TransactionTable = ({ data }) => {
+const TransactionTable = ({ data,invoiceId }) => {
   const [amout, setamout] = useState("");
   useEffect(() => {
     var amnt = 0;
@@ -51,7 +51,7 @@ const TransactionTable = ({ data }) => {
               scope="row"
               class="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap border-r-2 border-b-2 border-gray-300 "
             >
-              6748-2279 [0209]
+              #{invoiceId}
             </th>
             <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
               {i?.date}
@@ -63,7 +63,7 @@ const TransactionTable = ({ data }) => {
               {i?.category}
             </td>
             <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
-              {i?.amount}
+              {i?.amount} AED
             </td>
           </tr>
         ))}
@@ -79,7 +79,7 @@ const TransactionTable = ({ data }) => {
             Total
           </td>
           <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black font-extrabold text-base">
-            {amout}
+            {amout} AED
           </td>
         </tr>
       </tbody>

@@ -74,3 +74,12 @@ export const getBillById = (id)=>async(dispatch)=>{
         
     }
 }
+export const deleteBill = (id)=>async(dispatch)=>{
+  dispatch(isRequest())
+  try {
+    const {data} = await axios.get(`/delete/bill/${id}`);
+    dispatch(isSuccess(data))
+  } catch (error) {
+    dispatch(isError(error.response.data))
+  }
+}

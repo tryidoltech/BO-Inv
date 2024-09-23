@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Space, Table, Tag } from "antd";
 
-const TableDetail = ({ data, paidAmount, name, number }) => {
+const TableDetail = ({ data, paidAmount, name, number,type,settableData }) => {
   const [invoiceAmount, setinvoiceAmount] = useState(0);
   const [discountAmount, setdiscountAmount] = useState(0);
   useEffect(() => {
@@ -15,7 +15,11 @@ const TableDetail = ({ data, paidAmount, name, number }) => {
     setinvoiceAmount(invoice);
     setdiscountAmount(dis);
   }, [data]);
+const remove = (index)=>{
+const d = data?.filter((i,ind) => { return ind !== index})
+settableData(d)
 
+}
   return (
     <div >
       <div class="relative overflow-x-auto max-md:mt-5 font-[gilroy] max-md:w-fit max-md:overflow-hidden ">
@@ -54,41 +58,57 @@ const TableDetail = ({ data, paidAmount, name, number }) => {
               </th>
               <th
                 scope="col"
-                class="px-6 py-3 font-semibold text-black border-r-2 border-b-2 border-gray-300 text-base"
+                className="px-6 py-3 font-semibold text-black border-r-2 border-b-2 border-gray-300 text-base"
               >
                 Balance After Tax
               </th>
+              {
+                type === "add" ?        <th
+                scope="col"
+                class="px-6 py-3 border-r-2 border-b-2 border-gray-300"
+              >
+                Remove
+              </th> : ""
+              }
             </tr>
           </thead>
           <tbody>
             {data?.map((i, index) => (
-              <tr class="bg-white border-b ">
+              <tr className="bg-white border-b ">
                 <th
                   scope="row"
-                  class="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap border-r-2 border-b-2 border-gray-300 "
+                  className="px-4 py-1.5 font-medium text-gray-900 whitespace-nowrap border-r-2 border-b-2 border-gray-300 "
                 >
                   {i?.description}
                 </th>
-                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                <td className="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
                   {i?.amount}
                 </td>
-                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                <td className="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
                   {i?.discount}
                 </td>
-                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                <td className="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
                   {Number(i?.amount) - Number(i?.discount)}
                 </td>
-                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
+                <td className="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 text-black">
                   {((Number(i?.amount) - Number(i?.discount)) * 5) / 100}
                 </td>
-                <td class="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 font-semibold text-black text-sm font-[gilroy]">
+                <td className="px-4 py-1.5 border-r-2 border-b-2 border-gray-300 font-semibold text-black text-sm font-[gilroy]">
                   {Number(i?.amount) -
                     Number(i?.discount) +
                     ((Number(i?.amount) - Number(i?.discount)) * 5) / 100}
                 </td>
+                {
+                  type === "add" ?     <td onClick={()=>remove(index)} className="px-4 py-1.5 border-r-2 cursor-pointer items-center text-center border-b-2 border-gray-300 text-black">
+                  <i className="ri-close-circle-fill text-2xl text-red-500"></i>
+                </td> : ""
+                }
               </tr>
             ))}
-            <tr class="bg-white border-b ">
+            {
+              type === "add" ? "" :
+            <>
+             <tr class="bg-white border-b ">
               <th
                 scope="row"
                 class="px-6 text-righ4 py-1.5 font-medium text-gray-900 whitespace-nowrap border-r-2 border-b-2 border-gray-300 "
@@ -186,7 +206,9 @@ const TableDetail = ({ data, paidAmount, name, number }) => {
                   ((Number(invoiceAmount) - Number(discountAmount)) * 5) / 100 -
                   paidAmount}
               </td>
-            </tr>
+            </tr> 
+            </>
+           }
           </tbody>
         </table>
       </div>

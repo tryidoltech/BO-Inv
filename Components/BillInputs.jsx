@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select } from "antd";
+import { Button, Form, Input, Select,DatePicker } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import TableDetail from "./Table";
 import TransactionTable from "./TransactionTable";
@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { uploadBill } from "../Store/Action/UserAction";
 import Papa from "papaparse";
 import { toast } from "react-toastify";
+const { RangePicker } = DatePicker;
 
 const BillInputs = () => {
   const [form] = Form.useForm();
@@ -23,6 +24,9 @@ const BillInputs = () => {
   const [paidAmount, setpaidAmount] = useState(0);
   const [orderStatus, setorderStatus] = useState("Completed");
   const [invoiceStatus, setinvoiceStatus] = useState("Paid");
+  const [vehiclePartOne, setVehiclePartOne] = useState("");
+  const [vehiclePartTwo, setVehiclePartTwo] = useState("");
+
   const navigate = useNavigate();
   const onFormLayoutChange = ({ layout }) => {
     setFormLayout(layout);
@@ -64,8 +68,21 @@ const BillInputs = () => {
     settransAmount("");
   };
   const dispatch = useDispatch();
-  // Handle form submission
+
   const onFinish = (values) => {
+    const startDate = values.days[0].$d;
+    const endDate = values.days[1].$d;
+    const options = {
+      year: 'numeric',
+      month: 'numeric',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false, 
+    };
+    const startDateFormatted = startDate.toLocaleString('en-GB', options); 
+  const endDateFormatted = endDate.toLocaleString('en-GB', options);
     const value = {
       invoiceTo: values.invoiceTo,
       address: values.address,
@@ -75,8 +92,12 @@ const BillInputs = () => {
       invoiceStatus: invoiceStatus,
       orderStatus: orderStatus,
       vehicleName: values.vehicleName,
-      vehicleNumber: values.vehicleNumber,
+      startDate:startDateFormatted,
+      endDate:endDateFormatted,
+      vehicleNumber: vehiclePartOne + "-" + vehiclePartTwo,
     };
+    console.log(value);
+
     const dets = {
       value,
       tableData,
@@ -127,8 +148,7 @@ const BillInputs = () => {
     }
   };
 
-  console.log(tableData);
-
+  
   return (
     <Form
       layout={"vertical"}
@@ -154,6 +174,10 @@ const BillInputs = () => {
         </Form.Item>
         <Form.Item label="Due Date" name="dueDate">
           <Input placeholder="input placeholder" type="date" />
+        </Form.Item>
+        <Form.Item label="Number of Rental Dates" name="days">
+        <RangePicker  showTime />
+
         </Form.Item>
         <Form.Item label="Invoice Status" name="invoiceStatus">
           <Select
@@ -198,8 +222,29 @@ const BillInputs = () => {
         <Form.Item label="Vehicle Name" name="vehicleName">
           <Input placeholder="Vehicle Name" type="text" />
         </Form.Item>
-        <Form.Item label="Vehicle Number" name="vehicleNumber">
-          <Input placeholder="Vehicle Number" type="number" />
+        <Form.Item
+          label="Vehicle Number"
+          className="flex items-center"
+          name="vehicleNumber"
+        >
+          <div className="flex items-center gap-2">
+            <Input.OTP
+              value={vehiclePartOne}
+              onChange={(e) => setVehiclePartOne(e)}
+              placeholder="A"
+              length={1}
+              formatter={(str) => str.toUpperCase()}
+            />
+            <span className="font-semibold text-2xl">-</span>
+            <Input.OTP
+              value={vehiclePartTwo}
+              onChange={(e) => setVehiclePartTwo(e)}
+              placeholder="12345"
+              length={5}
+              type="number"
+              formatter={(str) => str.replace(/\D/g, "")}
+            />
+          </div>
         </Form.Item>
       </div>
       <div className="w-full">
@@ -244,7 +289,7 @@ const BillInputs = () => {
           />
         </div>
         {tableData && tableData?.length > 0 ? (
-          <TableDetail data={tableData} />
+          <TableDetail data={tableData} type={"add"} settableData={settableData} />
         ) : (
           ""
         )}
@@ -287,7 +332,11 @@ const BillInputs = () => {
               ]}
             />
           </Form.Item>
-          <Form.Item label="Category" name="transactionCategory" className="w-full">
+          <Form.Item
+            label="Category"
+            name="transactionCategory"
+            className="w-full"
+          >
             <Select
               // defaultValue="Rental Income"
               style={{
@@ -324,7 +373,10 @@ const BillInputs = () => {
           ""
         )}
       </div>
-      <Form.Item {...buttonItemLayout} className="max-md:translate-x-1/3 max-md:mt-4 max-md:text-2xl">
+      <Form.Item
+        {...buttonItemLayout}
+        className="max-md:translate-x-1/3 max-md:mt-4 max-md:text-2xl"
+      >
         <Button type="primary" htmlType="submit">
           Submit
         </Button>
