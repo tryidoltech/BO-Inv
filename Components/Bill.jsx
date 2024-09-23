@@ -14,23 +14,35 @@ const Bill = ({ data, a }) => {
 
   // }, [])
   useEffect(() => {
-    if(data){
-
+    if (data) {
       setinvoiceId(data?._id.substring(1, 10));
-      const startDate = new Date(data?.value?.startDate);
-      const endDate = new Date(data?.value?.endDate);
+
+      const parseDate = (dateString) => {
+        const [datePart, timePart] = dateString.split(', ');
+        const [day, month, year] = datePart.split('/').map(Number);
+        const [hours, minutes, seconds] = timePart.split(':').map(Number);
+        return new Date(year, month - 1, day, hours, minutes, seconds);
+      };
   
+      const startDate = parseDate(data?.value?.startDate);
+      const endDate = parseDate(data?.value?.endDate);
+      
       // Format the dates for display
       const invoiceDate = startDate.toLocaleDateString('en-GB');
       const dueDate = endDate.toLocaleDateString('en-GB');
       console.log(invoiceDate, dueDate);
-      if (!isNaN(invoiceDate) && !isNaN(dueDate)) {
-        const timeDifference = dueDate - invoiceDate;
+  
+      // Calculate the difference between dates in milliseconds
+      if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+        const timeDifference = endDate.getTime() - startDate.getTime();
         const daysDifference = timeDifference / (1000 * 3600 * 24);
         setNumberOfDays(Math.ceil(daysDifference)); // Using Math.ceil to round up
       }
     }
-  }, [data])
+  }, [data]);
+  
+  console.log(invoiceId);
+  
   console.log(invoiceId);
   
   return (
