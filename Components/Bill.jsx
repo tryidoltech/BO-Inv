@@ -81,7 +81,7 @@ const Bill = ({ data, a }) => {
           <h1 className="max-md:text-xs">
             Number of Days:{" "}
             <span className="font-semibold">
-              {numberOfDays} Days -- from {data?.value?.startDate} to {data?.value?.endDate}{" "}
+              {numberOfDays} Days - from {data?.value?.startDate} to {data?.value?.endDate}{" "}
             </span>
           </h1>
           <h1 className="max-md:text-xs">

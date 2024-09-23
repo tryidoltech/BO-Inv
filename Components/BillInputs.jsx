@@ -1,4 +1,4 @@
-import { Button, Form, Input, Select,DatePicker } from "antd";
+import { Button, Form, Input, Select, DatePicker } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import TableDetail from "./Table";
 import TransactionTable from "./TransactionTable";
@@ -73,16 +73,28 @@ const BillInputs = () => {
     const startDate = values.days[0].$d;
     const endDate = values.days[1].$d;
     const options = {
-      year: 'numeric',
-      month: 'numeric',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false, 
+      year: "numeric",
+      month: "numeric",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: false,
     };
-    const startDateFormatted = startDate.toLocaleString('en-GB', options); 
-  const endDateFormatted = endDate.toLocaleString('en-GB', options);
+    const startDateFormatted = startDate.toLocaleString("en-GB", options);
+    const endDateFormatted = endDate.toLocaleString("en-GB", options);
+    if (
+      !values.invoiceTo ||
+      !values.address ||
+      !values.mobileNo ||
+      !values.invoiceDate ||
+      !values.dueDate ||
+      !values.vehicleName ||
+      !vehiclePartOne ||
+      !vehiclePartTwo
+    ) {
+      return toast.error("Please fill out all required fields.");
+    }
     const value = {
       invoiceTo: values.invoiceTo,
       address: values.address,
@@ -92,12 +104,10 @@ const BillInputs = () => {
       invoiceStatus: invoiceStatus,
       orderStatus: orderStatus,
       vehicleName: values.vehicleName,
-      startDate:startDateFormatted,
-      endDate:endDateFormatted,
+      startDate: startDateFormatted,
+      endDate: endDateFormatted,
       vehicleNumber: vehiclePartOne + "-" + vehiclePartTwo,
     };
-    console.log(value);
-
     const dets = {
       value,
       tableData,
@@ -147,8 +157,14 @@ const BillInputs = () => {
       });
     }
   };
+  useEffect(() => {
+    if (paidAmount !== 0) {
+      settransAmount(paidAmount);
+      console.log("hello");
+    }
+  }, [setpaidAmount, paidAmount, setpaidAmount]);
+  console.log(paidAmount, transAmount, "amount");
 
-  
   return (
     <Form
       layout={"vertical"}
@@ -176,8 +192,7 @@ const BillInputs = () => {
           <Input placeholder="input placeholder" type="date" />
         </Form.Item>
         <Form.Item label="Number of Rental Dates" name="days">
-        <RangePicker  showTime />
-
+          <RangePicker showTime />
         </Form.Item>
         <Form.Item label="Invoice Status" name="invoiceStatus">
           <Select
@@ -249,31 +264,34 @@ const BillInputs = () => {
       </div>
       <div className="w-full">
         <h1 className="font-semibold text-xl pb-4">Add Bill Details</h1>
-        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-3 max-md:gap-x-2">
-          <Form.Item label="Description" name="billDescription">
+        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-3 max-md:gap-x-2 pb-5">
+          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
+            <span>Description</span>
             <Input
               placeholder="Demo Product"
               value={description}
               onChange={(e) => setdescription(e.target.value)}
               type="text"
             />
-          </Form.Item>
-          <Form.Item label="Amount" name="billAmount">
+          </div>
+          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
+            <span>Amount</span>
             <Input
               placeholder="500"
               value={amount}
               onChange={(e) => setamount(e.target.value)}
               type="number"
             />
-          </Form.Item>
-          <Form.Item label="Discount" name="billDiscount">
+          </div>
+          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
+            <span>Discount</span>
             <Input
               placeholder="100"
               value={discount}
               onChange={(e) => setdiscount(e.target.value)}
               type="number"
             />
-          </Form.Item>
+          </div>
           <Button type="primary" onClick={addBillValues} className="w-fit">
             Add Values
           </Button>
@@ -289,7 +307,12 @@ const BillInputs = () => {
           />
         </div>
         {tableData && tableData?.length > 0 ? (
-          <TableDetail data={tableData} type={"add"} settableData={settableData} />
+          <TableDetail
+            data={tableData}
+            type={"add"}
+            settableData={settableData}
+            
+          />
         ) : (
           ""
         )}
@@ -352,13 +375,14 @@ const BillInputs = () => {
               ]}
             />
           </Form.Item>
-          <Form.Item label="Amount" name="transactionAmount">
+          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4" >
+            <span>Amount</span>
             <Input
-              value={transAmount}
               onChange={(e) => settransAmount(e.target.value)}
+              value={transAmount}
               type="number"
             />
-          </Form.Item>
+          </div>
           <Button
             type="primary"
             onClick={addTransactionValues}
