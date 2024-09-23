@@ -4,7 +4,7 @@
 
 @font-face {
   font-family: gilroy;
-  src: url("/Gilroy-Regular.ttf");
+  src: url("../public/Gilroy-Regular.ttf");
 }
 html,body{
   font-family: gilroy;
