@@ -16,6 +16,7 @@ const Bill = ({ data, a }) => {
   useEffect(() => {
     if (data) {
       setinvoiceId(data?._id.substring(1, 10));
+  
 
       const parseDate = (dateString) => {
         const [datePart, timePart] = dateString.split(', ');
@@ -40,8 +41,6 @@ const Bill = ({ data, a }) => {
       }
     }
   }, [data]);
-  
-  console.log(invoiceId);
   
   console.log(invoiceId);
   
