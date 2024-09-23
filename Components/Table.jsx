@@ -22,7 +22,7 @@ settableData(d)
 }
   return (
     <div >
-      <div class="relative overflow-x-auto max-md:mt-5 font-[gilroy] max-md:w-fit max-md:overflow-hidden ">
+      <div class="relative overflow-x-auto w-full max-md:mt-5 font-[gilroy] max-md:w-fit max-md:overflow-hidden ">
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 border-l-2 mx-auto border-gray-300 max-md:mx-0">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 border-t-2 border-gray-300  ">
             <tr>
@@ -58,7 +58,7 @@ settableData(d)
               </th>
               <th
                 scope="col"
-                className="px-6 py-3 font-semibold text-black border-r-2 border-b-2 border-gray-300 text-base"
+                className="px-6 py-3 font-semibold text-black border-r-2 border-b-2 border-gray-300 text-sm"
               >
                 Balance After Tax
               </th>

@@ -44,7 +44,7 @@ const Bill = ({ data, a }) => {
   
   return (
     <div
-      className="w-[60%] mx-auto min-h-screen flex flex-col gap-6 p-10 pb-20 border-2 font-[gilroy] max-md:w-[100rem] max-md:h-fit max-md:min-h-screen"
+      className="w-[68%] mx-auto min-h-screen flex flex-col gap-6 p-10 pb-20 border-2 font-[gilroy] max-md:w-[100rem] max-md:h-fit max-md:min-h-screen"
       ref={a}
     >
       <div className="w-full">
@@ -81,7 +81,7 @@ const Bill = ({ data, a }) => {
           <h1 className="max-md:text-xs">
             Number of Days:{" "}
             <span className="font-semibold">
-              {numberOfDays} Days - from {data?.value?.startDate} to {data?.value?.endDate}{" "}
+              {numberOfDays - 1} Days - from {data?.value?.startDate} to {data?.value?.endDate}{" "}
             </span>
           </h1>
           <h1 className="max-md:text-xs">
