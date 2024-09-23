@@ -94,7 +94,7 @@ const Bill = ({ data, a }) => {
           <h1>
             Vehicle:{" "}
             <span className="font-semibold">
-              #13-3 {data?.value?.vehicleName} {data?.value?.vehicleNumber}
+             {data?.value?.vehicleName} {data?.value?.vehicleNumber}
             </span>
           </h1>
         </div>
