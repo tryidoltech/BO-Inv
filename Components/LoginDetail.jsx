@@ -31,23 +31,18 @@ const LoginUser = () => {
   const testThirdPartyCookies = async () => {
     try {
       // Make a request to your backend to set a test cookie
-      await axios.get('/api/set-test-cookie');
+      await axios.get("/api/set-test-cookie");
 
       // After some delay, try to read the test cookie from the document
-      setTimeout(() => {
-        // Attempt to check the cookie in document.cookie
-        const cookieExists = document.cookie.indexOf('testcookie') !== -1;
-
-        if (!cookieExists) {
-          // If the cookie isn't set, it means third-party cookies are blocked
-          setCookiesEnabled(false);
-          toast.error("Third-party cookies are blocked. Please enable cookies to log in.");
-        }
-      }, 500);
+      // setTimeout(() => {
+      //   // Attempt to check the cookie in document.cookie
+      //   const cookieExists = document.cookie.indexOf('testcookie') !== -1;
     } catch (error) {
       // Handle any errors (e.g., network errors)
       setCookiesEnabled(false);
-      toast.error("Third-party cookies are blocked. Please enable cookies to log in.");
+      toast.error(
+        "Third-party cookies are blocked. Please enable cookies to log in."
+      );
     }
   };
 
@@ -85,7 +80,7 @@ const LoginUser = () => {
       //   );
       // }
       const info = { email, password };
-dispatch(userLogin(info))
+      dispatch(userLogin(info));
       //   dispatch(loginUser(info));
     } else {
       if (email === "") {
@@ -99,29 +94,29 @@ dispatch(userLogin(info))
       }
     }
   };
-  const navigate = useNavigate()
-    // useEffect(() => {
+  const navigate = useNavigate();
+  // useEffect(() => {
 
-    //   // if (messageAuth) {
-    //   //   toast.success(messageAuth);
-    //   //   dispatch(clearMsgAuth());
-    //   // }
-    //   // if (errorAuth) {
-    //   //   toast.error(errorAuth);
-    //   //   dispatch(clearErrorAuth());
-    //   // }
+  //   // if (messageAuth) {
+  //   //   toast.success(messageAuth);
+  //   //   dispatch(clearMsgAuth());
+  //   // }
+  //   // if (errorAuth) {
+  //   //   toast.error(errorAuth);
+  //   //   dispatch(clearErrorAuth());
+  //   // }
 
-    //   dispatch(isUser());
-    //     if(isAuthenticated){
-    //       navigate("/")
-    //     }
-    //     else{
-    //      navigate("/login")
-    //     }
-      
-    // }, [messageAuth, errorAuth,dispatch]);
-    console.log(loading,isAuthenticated);
-    
+  //   dispatch(isUser());
+  //     if(isAuthenticated){
+  //       navigate("/")
+  //     }
+  //     else{
+  //      navigate("/login")
+  //     }
+
+  // }, [messageAuth, errorAuth,dispatch]);
+  console.log(loading, isAuthenticated);
+
   return (
     <>
       {loading ? (
