@@ -46,6 +46,7 @@ export const logout = () => async (dispatch) => {
   dispatch(isRequest());
   try {
     const { data } = await axios.get("/logout");
+    localStorage.removeItem("userToken");
     dispatch(logoutSuccess(data));
   } catch (error) {
     dispatch(isError(error.response.data));
