@@ -15,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { isUser, userLogin } from "../Store/Action/UserAction";
 import { useNavigate } from "react-router";
+import axios from "../Axios/axios";
 // import { isUser, loginUser } from "@/store/Action/User";
 // import {
 //   clearError,
@@ -26,24 +27,32 @@ import { useNavigate } from "react-router";
 const LoginUser = () => {
   const [cookiesEnabled, setCookiesEnabled] = useState(true);
 
-  // Function to check if cookies are enabled
-  const checkCookiesEnabled = () => {
-    document.cookie = "testcookie=test; max-age=60"; // Set a test cookie
-    const isCookieSet = document.cookie.indexOf("testcookie") !== -1;
+  // Function to test if third-party cookies are allowed
+  const testThirdPartyCookies = async () => {
+    try {
+      // Make a request to your backend to set a test cookie
+      await axios.get('/api/set-test-cookie');
 
-    // Clean up the test cookie
-    document.cookie = "testcookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    return isCookieSet;
+      // After some delay, try to read the test cookie from the document
+      setTimeout(() => {
+        // Attempt to check the cookie in document.cookie
+        const cookieExists = document.cookie.indexOf('testcookie') !== -1;
+
+        if (!cookieExists) {
+          // If the cookie isn't set, it means third-party cookies are blocked
+          setCookiesEnabled(false);
+          toast.error("Third-party cookies are blocked. Please enable cookies to log in.");
+        }
+      }, 500);
+    } catch (error) {
+      // Handle any errors (e.g., network errors)
+      setCookiesEnabled(false);
+      toast.error("Third-party cookies are blocked. Please enable cookies to log in.");
+    }
   };
 
   useEffect(() => {
-    const result = checkCookiesEnabled();
-    setCookiesEnabled(result);
-
-    if (!result) {
-      // Show a toast error message if cookies are disabled
-      toast.error("Cookies are disabled in your browser. Please enable them to proceed.");
-    }
+    testThirdPartyCookies();
   }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setemail] = useState("");
