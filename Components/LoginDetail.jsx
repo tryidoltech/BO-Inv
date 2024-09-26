@@ -15,7 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { isUser, userLogin } from "../Store/Action/UserAction";
 import { useNavigate } from "react-router";
-import axios from "../Axios/axios";
+import axios from "axios";
 // import { isUser, loginUser } from "@/store/Action/User";
 // import {
 //   clearError,
@@ -31,7 +31,11 @@ const LoginUser = () => {
   const testThirdPartyCookies = async () => {
     try {
       // Make a request to your backend to set a test cookie
-      await axios.get('/api/set-test-cookie');
+      await axios.get('https://billbackend-e41n.onrender.com/api/set-test-cookie',
+        {
+          withCredentials:true
+        }
+      );
 
       // After some delay, try to read the test cookie from the document
       setTimeout(() => {
