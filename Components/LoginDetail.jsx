@@ -24,6 +24,27 @@ import { useNavigate } from "react-router";
 // } from "@/store/Reducer/UserReducer";
 
 const LoginUser = () => {
+  const [cookiesEnabled, setCookiesEnabled] = useState(true);
+
+  // Function to check if cookies are enabled
+  const checkCookiesEnabled = () => {
+    document.cookie = "testcookie=test; max-age=60"; // Set a test cookie
+    const isCookieSet = document.cookie.indexOf("testcookie") !== -1;
+
+    // Clean up the test cookie
+    document.cookie = "testcookie=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    return isCookieSet;
+  };
+
+  useEffect(() => {
+    const result = checkCookiesEnabled();
+    setCookiesEnabled(result);
+
+    if (!result) {
+      // Show a toast error message if cookies are disabled
+      toast.error("Cookies are disabled in your browser. Please enable them to proceed.");
+    }
+  }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
