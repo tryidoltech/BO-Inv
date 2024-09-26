@@ -9,6 +9,7 @@ const NavBar = () => {
   const navigate = useNavigate()
    const logoutUser = ()=>{
     dispatch(logout())
+    localStorage.removeItem("userToken");
     navigate("/login")
    }
    const [open, setOpen] = useState(false);
