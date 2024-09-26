@@ -18,6 +18,8 @@ export const userLogin = (info) => async (dispatch) => {
   dispatch(isLoginRequest());
   try {
     const { data } = await axios.post("/signin", info);
+    localStorage.setItem('userToken', data?.token);
+
     dispatch(isLoginSuccess(data));
   } catch (error) {
     dispatch(isLoginFail(error.response.data));
@@ -27,7 +29,13 @@ export const userLogin = (info) => async (dispatch) => {
 export const isUser = (info) => async (dispatch) => {
   dispatch(isUserRequest());
   try {
-    const { data } = await axios.get("/user");
+    const token = localStorage.getItem('userToken');
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+    const { data } = await axios.get(`/user`,config);
     dispatch(isUserSuccess(data));
   } catch (error) {
     dispatch(isUserFail());
