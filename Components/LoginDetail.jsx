@@ -26,29 +26,6 @@ import axios from "../Axios/axios";
 
 const LoginUser = () => {
   const [cookiesEnabled, setCookiesEnabled] = useState(true);
-
-  // Function to test if third-party cookies are allowed
-  const testThirdPartyCookies = async () => {
-    try {
-      // Make a request to your backend to set a test cookie
-      await axios.get("/api/set-test-cookie");
-
-      // After some delay, try to read the test cookie from the document
-      // setTimeout(() => {
-      //   // Attempt to check the cookie in document.cookie
-      //   const cookieExists = document.cookie.indexOf('testcookie') !== -1;
-    } catch (error) {
-      // Handle any errors (e.g., network errors)
-      setCookiesEnabled(false);
-      toast.error(
-        "Third-party cookies are blocked. Please enable cookies to log in."
-      );
-    }
-  };
-
-  useEffect(() => {
-    testThirdPartyCookies();
-  }, []);
   const [showPassword, setShowPassword] = useState(false);
   const [email, setemail] = useState("");
   const [password, setpassword] = useState("");
