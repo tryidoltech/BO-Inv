@@ -18,6 +18,7 @@
     "antd": "^5.20.6",
     "axios": "^1.7.7",
     "convert-csv-to-json": "^2.49.0",
+    "dayjs": "^1.11.13",
     "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",
     "jspdf": "^2.5.2",

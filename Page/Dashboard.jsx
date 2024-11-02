@@ -3,6 +3,8 @@ import NavBar from "../Components/NavBar";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllBill } from "../Store/Action/UserAction";
 import InvoiceTable from "../Components/InvoiceTable";
+import { Button } from "antd";
+import { NavLink } from "react-router-dom";
 
 const Dashboard = () => {
   const { loading, message, error, bill } = useSelector((state) => state.User);
@@ -14,7 +16,17 @@ const Dashboard = () => {
     <div className="w-full h-screen">
       <NavBar />
       <div className="w-full h-screen p-10 max-md:p-4">
+        <div className="flex items-center justify-between px-[8vh]">
         <h1 className="text-3xl font-semibold ">Dashboard</h1>
+      
+        <NavLink
+        to={"/add/bill"}
+            className="text-lg border-black bg-blue-500 text-white p-1 px-4 rounded-md"
+          >
+            Add Bill
+            <i className="ri-add-line"></i>
+          </NavLink>
+        </div>
         <div className="w-full grid grid-cols-4 p-10 gap-4 max-md:grid-cols-2 max-md:p-0 ">
           <div className="w-full shadow-md hover:shadow-lg cursor-pointer ease-linear duration-300 shadow-gray-300 flex bg-blue-200 rounded-xl h-[25vh] text-xl max-md:text-base font-semibold  items-center flex-col justify-center">
             <img src="/user.png" alt="" />

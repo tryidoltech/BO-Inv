@@ -40,13 +40,14 @@ const location = useLocation()
       dispatch(clearError());
     }
   }, [dispatch, error, message]);
-
+var download = true
   return (
     <>
       <Routes>
         <Route path="/" index element={<Dashboard/>} />
         <Route path="/add/bill" element={<UploadBill/>} />
         <Route path="/bill/:id" element={<BillPage />} />
+        <Route path="/bill/download/:id" element={<BillPage download={download} />} />
         <Route path="/invoice" element={<Invoice />} />
         <Route path="/login" element={<LoginDetails />} />
       </Routes>

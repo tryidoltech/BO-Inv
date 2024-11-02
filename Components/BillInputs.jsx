@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { uploadBill } from "../Store/Action/UserAction";
 import Papa from "papaparse";
 import { toast } from "react-toastify";
+import dayjs from "dayjs";
 const { RangePicker } = DatePicker;
 
 const BillInputs = () => {
@@ -26,7 +27,11 @@ const BillInputs = () => {
   const [invoiceStatus, setinvoiceStatus] = useState("Paid");
   const [vehiclePartOne, setVehiclePartOne] = useState("");
   const [vehiclePartTwo, setVehiclePartTwo] = useState("");
+  const [openInvoiceDatePicker, setOpenInvoiceDatePicker] = useState(false);
+  const [openDueDatePicker, setOpenDueDatePicker] = useState(false);
 
+  const handleOpenInvoiceDatePicker = () => setOpenInvoiceDatePicker(true);
+  const handleOpenDueDatePicker = () => setOpenDueDatePicker(true);
   const navigate = useNavigate();
   const onFormLayoutChange = ({ layout }) => {
     setFormLayout(layout);
@@ -164,7 +169,12 @@ const BillInputs = () => {
     }
   }, [setpaidAmount, paidAmount, setpaidAmount]);
   console.log(paidAmount, transAmount, "amount");
-
+  const invoice = useRef();
+  const handleClick = () => {
+    document.querySelector("#invoiceDate").click();
+    invoice.current.click();
+    console.log(invoice.current);
+  };
   return (
     <Form
       layout={"vertical"}
@@ -186,13 +196,25 @@ const BillInputs = () => {
           <Input placeholder="1234567898" type="number" />
         </Form.Item>
         <Form.Item label="Invoice Date" name="invoiceDate">
-          <Input placeholder="input placeholder" type="date" />
+        <DatePicker
+        className="w-full"
+            open={openInvoiceDatePicker}
+            onOpenChange={(open) => setOpenInvoiceDatePicker(open)}
+            onClick={handleOpenInvoiceDatePicker}
+            placeholder="Select Invoice Date"
+            defaultValue={dayjs()}
+          />
         </Form.Item>
         <Form.Item label="Due Date" name="dueDate">
-          <Input placeholder="input placeholder" type="date" />
-        </Form.Item>
+        <DatePicker
+        className="w-full"
+            open={openDueDatePicker}
+            onOpenChange={(open) => setOpenDueDatePicker(open)}
+            onClick={handleOpenDueDatePicker}
+            placeholder="Select Invoice Date"
+          />        </Form.Item>
         <Form.Item label="Number of Rental Dates" name="days">
-          <RangePicker showTime />
+          <RangePicker  showTime />
         </Form.Item>
         <Form.Item label="Invoice Status" name="invoiceStatus">
           <Select
@@ -311,7 +333,6 @@ const BillInputs = () => {
             data={tableData}
             type={"add"}
             settableData={settableData}
-            
           />
         ) : (
           ""
@@ -375,7 +396,7 @@ const BillInputs = () => {
               ]}
             />
           </Form.Item>
-          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4" >
+          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
             <span>Amount</span>
             <Input
               onChange={(e) => settransAmount(e.target.value)}

@@ -16,20 +16,19 @@ const Bill = ({ data, a }) => {
   useEffect(() => {
     if (data) {
       setinvoiceId(data?._id.substring(1, 10));
-  
 
       const parseDate = (dateString) => {
-        const [datePart, timePart] = dateString.split(', ');
-        const [day, month, year] = datePart.split('/').map(Number);
-        const [hours, minutes, seconds] = timePart.split(':').map(Number);
+        const [datePart, timePart] = dateString.split(", ");
+        const [day, month, year] = datePart.split("/").map(Number);
+        const [hours, minutes, seconds] = timePart.split(":").map(Number);
         return new Date(year, month - 1, day, hours, minutes, seconds);
       };
-  
+
       const startDate = parseDate(data?.value?.startDate);
       const endDate = parseDate(data?.value?.endDate);
 
-      const invoiceDate = startDate.toLocaleDateString('en-GB');
-      const dueDate = endDate.toLocaleDateString('en-GB');
+      const invoiceDate = startDate.toLocaleDateString("en-GB");
+      const dueDate = endDate.toLocaleDateString("en-GB");
       console.log(invoiceDate, dueDate);
 
       if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
@@ -39,20 +38,26 @@ const Bill = ({ data, a }) => {
       }
     }
   }, [data]);
-  
+
   console.log(invoiceId);
-  
+
   return (
     <div
       className="w-[68%] mx-auto min-h-screen flex flex-col gap-6 p-10 pb-20 border-2 font-[gilroy] max-md:w-[50rem] max-md:h-fit max-md:min-h-screen"
       ref={a}
     >
-      <div className="w-full">
-        <img src="/Header.png" className="w-full object-cover h-full" alt="" />
+      <div className="w-full bg-red-400 ">
+        <img
+          src="/Header.png"
+          className="w-full scale-x-110  object-cover h-full"
+          alt=""
+        />
       </div>
       <div className="w-full mx-auto flex ">
         <div className="flex w-full  flex-col text-black text-base gap-0.5'">
-          <h1 className="font-extrabold text-4xl pb-2 max-md:text-base">Tax Invoice</h1>
+          <h1 className="font-extrabold text-4xl pb-2 max-md:text-base">
+            Tax Invoice
+          </h1>
           <h1 className="max-md:text-xs">
             Tax Invoice TRN:{" "}
             <span className="font-semibold">104127291300003</span>{" "}
@@ -69,11 +74,13 @@ const Bill = ({ data, a }) => {
             Due Date:{" "}
             <span className="font-semibold">{data?.value?.dueDate}</span>
           </h1>
-     
+
           <h1 className="max-md:text-xs">
             {" "}
             Invoice Status:{" "}
-            <span className="font-semibold">{data?.value?.invoiceStatus}</span>{" "}
+            <span className="font-semibold">
+              {data?.value?.invoiceStatus}
+            </span>{" "}
           </h1>
           <h1 className="max-md:text-xs">
             Currency: <span className="font-semibold">AED</span>{" "}
@@ -81,7 +88,8 @@ const Bill = ({ data, a }) => {
           <h1 className="max-md:text-xs">
             Number of Days:{" "}
             <span className="font-semibold">
-              {numberOfDays - 1} Days - from {data?.value?.startDate} to {data?.value?.endDate}{" "}
+              {numberOfDays - 1} Days - from {data?.value?.startDate} to{" "}
+              {data?.value?.endDate}{" "}
             </span>
           </h1>
           <h1 className="max-md:text-xs">
@@ -94,7 +102,7 @@ const Bill = ({ data, a }) => {
           <h1>
             Vehicle:{" "}
             <span className="font-semibold">
-             {data?.value?.vehicleName} {data?.value?.vehicleNumber}
+              {data?.value?.vehicleName} {data?.value?.vehicleNumber}
             </span>
           </h1>
         </div>
@@ -113,13 +121,13 @@ const Bill = ({ data, a }) => {
           data?.paidAmount && data?.paidAmount !== 0 ? data?.paidAmount : 0
         }
         name={data?.value?.vehicleName}
-        number = {data?.value?.vehicleNumber}
+        number={data?.value?.vehicleNumber}
       />
-      <div className="w-full mx-auto flex flex-col gap-1 font-[gilroy]">
+      <div className="w-full mx-auto flex flex-col gap-3 font-[gilroy]">
         <h1 className="font-extrabold text-2xl">Transactions</h1>
         <TransactionTable data={data?.transactionData} invoiceId={invoiceId} />
       </div>
-      <div className="grid w-full grid-cols-3 gap-2 mx-auto font-extrabold text-lg">
+      <div className="w-full flex translate-y-10 items-center justify-between gap-2 mx-auto font-extrabold text-lg">
         <div className="flex flex-col">
           <h1 className="border-b-2 w-fit pb-1">Receiver Signature</h1>
           <img src="" alt="" />

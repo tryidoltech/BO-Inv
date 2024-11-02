@@ -5,17 +5,13 @@ const instance = axios.create({
   // Set your base URL (adjust based on production/development)
  baseURL:"https://billbackend.vercel.app/api/v1/user",
 //  baseURL:"http://localhost:5001/api/v1/user",
-  withCredentials: true,  // This allows cookies to be sent if needed
+  withCredentials: true,
 });
-
-// Add a request interceptor to automatically include the Bearer token
 instance.interceptors.request.use(
   (config) => {
-    // Get the token from localStorage
     const token = localStorage.getItem("userToken");
 
     if (token) {
-      // If the token exists, add it to the Authorization header
       config.headers["Authorization"] = `Bearer ${token}`;
     }
 

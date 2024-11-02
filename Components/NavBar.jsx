@@ -3,35 +3,56 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../Store/Action/UserAction";
 import DrawerBill from "./DrawerBill";
+import { toast } from "react-toastify";
+import { clearError, clearMessage } from "../Store/Reducer/UserReducer";
 
 const NavBar = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
-   const logoutUser = ()=>{
-    dispatch(logout())
-    localStorage.removeItem("userToken");
-    navigate("/login")
-   }
-   const [open, setOpen] = useState(false);
-   const [placement, setPlacement] = useState("left");
-   const showDrawer = () => {
-     setOpen(true);
-   };
-   const onClose = () => {
-     setOpen(false);
-   };
-   const onChange = (e) => {
-     setPlacement(e.target.value);
-   };
-  return (
-  <>
-    <div className="w-full h-20 flex items-center justify-between px-20 text-xl  bg-white max-md:px-4 shrink-0">
-      <div className="flex items-center justify-center gap-2">
-      <img src="/blueLogo.png" className="w-20 object-contain h-16" alt="" />
-      <h1 className="max-md:text-sm font-semibold text-base">Bill Generator</h1>
+  const navigate = useNavigate();
+  const { isAuthenticated, loading, message, error } = useSelector(
+    (state) => state.User
+  );
+  const logoutUser = () => {
+    dispatch(logout());
+    navigate("/login");
+    // localStorage.removeItem("userToken");
+  };
+  useEffect(() => {
+    if (message) {
+      toast.success(message);
+      dispatch(clearMessage());
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(clearError());
+    }
+  }, [isAuthenticated, loading,message,error]);
 
-      </div>
-      {/* <div className="flex gap-8 text-sm font-semibold">
+  const [open, setOpen] = useState(false);
+  const [placement, setPlacement] = useState("left");
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
+  const onChange = (e) => {
+    setPlacement(e.target.value);
+  };
+  return (
+    <>
+      <div className="w-full h-20 flex items-center justify-between px-20 text-xl  bg-white max-md:px-4 shrink-0">
+        <div className="flex items-center justify-center gap-2">
+          <img
+            src="/blueLogo.png"
+            className="w-20 object-contain h-16"
+            alt=""
+          />
+          <h1 className="max-md:text-sm font-semibold text-base">
+            Invoice Software
+          </h1>
+        </div>
+        {/* <div className="flex gap-8 text-sm font-semibold">
         <NavLink to={"/"} className="cursor-pointer">
           Add Bill
         </NavLink>
@@ -40,16 +61,22 @@ const NavBar = () => {
         </NavLink>
         <NavLink to={"/"} className="cursor-pointer"></NavLink>
       </div> */}
-      <div className="flex items-center justify-center gap-3">
-      <i className="ri-menu-5-line text-2xl bg-gray-200 p-2 px-3 rounded-full cursor-pointer " onClick={showDrawer}></i>
+        <div className="flex items-center justify-center gap-3">
+          <i
+            className="ri-menu-5-line text-2xl bg-gray-200 p-2 px-3 rounded-full cursor-pointer "
+            onClick={showDrawer}
+          ></i>
 
-      <button onClick={logoutUser} className="text-base border-black bg-red-500 text-white p-1 px-4 rounded-md">
-        Logout
-      </button>
+          <button
+            onClick={logoutUser}
+            className="text-base border-black bg-red-500 text-white p-1 px-4 rounded-md"
+          >
+            Logout
+          </button>
+        </div>
       </div>
-    </div>
-<DrawerBill showDrawer={showDrawer} onClose={onClose} open={open}/>
-  </>
+      <DrawerBill showDrawer={showDrawer} onClose={onClose} open={open} />
+    </>
   );
 };
 

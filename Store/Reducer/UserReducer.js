@@ -40,18 +40,19 @@ export const User = createSlice({
       state.loading = true;
     },
     logoutSuccess: (state, action) => {
-      (state.loading = false), (state.message = action.payload.message),
-      state.isAuthenticated = false
+      (state.loading = false),
+        (state.message = action.payload.message),
+        (state.isAuthenticated = false);
     },
-    getBillSuccess:(state, action)=>{
-        state.loading = false, 
-        state.message = action.payload.message,
-        state.bill = action.payload.bill
+    getBillSuccess: (state, action) => {
+      (state.loading = false),
+        (state.message = action.payload.message),
+        (state.bill = action.payload.bill);
     },
-    getBillIDSuccess:(state, action)=>{
-        state.loading = false, 
-        state.message = action.payload.message,
-        state.billData = action.payload.bill
+    getBillIDSuccess: (state, action) => {
+      (state.loading = false),
+        (state.message = action.payload.message),
+        (state.billData = action.payload.bill);
     },
     isSuccess: (state, action) => {
       (state.loading = false), (state.message = action.payload.message);
@@ -82,6 +83,6 @@ export const {
   isSuccess,
   logoutSuccess,
   getBillSuccess,
-  getBillIDSuccess
+  getBillIDSuccess,
 } = User.actions;
 export default User.reducer;
