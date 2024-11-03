@@ -16,6 +16,7 @@ import { toast } from "react-toastify";
 import { isUser, userLogin } from "../Store/Action/UserAction";
 import { useNavigate } from "react-router";
 import axios from "../Axios/axios";
+import { Icon } from "@iconify/react/dist/iconify.js";
 // import { isUser, loginUser } from "@/store/Action/User";
 // import {
 //   clearError,
@@ -57,6 +58,8 @@ const LoginUser = () => {
       //   );
       // }
       const info = { email, password };
+      console.log(info);
+      
       dispatch(userLogin(info));
       //   dispatch(loginUser(info));
     } else {
@@ -101,82 +104,78 @@ const LoginUser = () => {
           <CircularProgress />
         </div>
       ) : (
-        <div className="w-full flex  items-center justify-center h-screen">
-          <div className="side h-full flex-col gap-10  w-fit p-4 flex items-center justify-center max-lg:hidden ">
-            <h1 className="text-5xl font-[poppins]">
-              Hi , Welcome Back User 👋
+        <div className="w-full  flex flex-col lg:flex-row min-h-screen items-center lg:items-stretch justify-between">
+        {/* Header */}
+        {/* <div className="w-full absolute top-0 left-0 flex items-center justify-between px-4 md:px-[10vw] py-2">
+          <img src="/Logo.png" className="h-10" alt="Logo" />
+          <NavLink to={"/"}>
+            <i
+              className="ri-close-line text-primary text-4xl md:text-5xl cursor-pointer"
+              style={{ fontWeight: "100" }}
+            ></i>
+          </NavLink>
+        </div> */}
+      
+        {/* Image Section */}
+        <div className="w-full lg:w-1/2 flex items-center justify-center mt-20 px-4 lg:p-0 order-1">
+          <img
+            src="/login.jpg"
+            alt="Login Illustration"
+            className="w-[60%]  h-full object-contain"
+          />
+        </div>
+      
+        {/* Form Section */}
+        <div className="w-full lg:w-1/2 flex flex-col justify-center  items-center lg:items-start p-6 lg:p-12 order-2">
+          <form onSubmit={formSubmit} className="w-full max-w-md flex flex-col justify-center">
+            <h1 className="text-center lg:text-left flex items-center text-primary text-2xl md:text-4xl font-extrabold">
+              <Icon
+                icon="solar:login-2-linear"
+                style={{ color: "#1d4ed8", marginRight: "1vw" }}
+              />
+              Sign in to your account
             </h1>
-            <img
-              src={"/bill.png"}
-              className="h-[50%] object-center object-contain"
-              alt=""
-            />
-          </div>
-          <div className="h-full w-1/2 max-lg:w-full  relative flex flex-col items-center gap-6 justify-center">
-            <h1 className=" text-4xl whitespace-nowrap font-bold font-[poppins]">
-              Login to Bill Generator
-            </h1>
-
-            {active ? (
-              <Alert severity="warning" className="w-1/2">
-                <AlertTitle>Alert</AlertTitle>
-                <strong>{alert}</strong>
-              </Alert>
-            ) : (
-              ""
-            )}
-
-            <form
-              autoComplete="false"
-              className="grid gap-8 w-1/2 "
-              onSubmit={formSubmit}
-            >
-              <TextField
-                id="outlined-basic"
+            <h3 className="w-full mt-4 text-center lg:text-left lightF">
+              Enter your email and password to sign in to your account.
+            </h3>
+      
+            <div className="flex flex-col items-start w-full gap-2 p-2 mt-6">
+              <label className="font-extrabold">
+                Enter your Email address <span className="text-primary">*</span>
+              </label>
+              <input
+                type="email"
+                placeholder="xyz@abcd.com"
+                className="w-full p-2 rounded-xl border-2"
+                name="email"
                 value={email}
                 onChange={handelEmail}
-                label="Email"
-                type="email"
-                variant="outlined"
-                // required
               />
-              <FormControl className="w-full" variant="outlined">
-                <InputLabel htmlFor="outlined-adornment-password">
-                  Password
-                </InputLabel>
-                <OutlinedInput
-                  value={password}
-                  onChange={handelPassword}
-                  id="outlined-adornment-password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  // required
-                  endAdornment={
-                    <InputAdornment position="end">
-                      <IconButton
-                        aria-label="toggle password visibility"
-                        onClick={handleClickShowPassword}
-                        onMouseDown={handleMouseDownPassword}
-                        edge="end"
-                        className="ease-in duration-1000	"
-                      >
-                        {showPassword ? (
-                          <i className="ri-eye-line"></i>
-                        ) : (
-                          <i className="ri-eye-close-line"></i>
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  }
-                  label="Password"
-                />
-              </FormControl>
-              <button className="w-full p-4 transition-all ease-linear duration-150 font-[poppins] text-white bg-black rounded hover:opacity-80  font-semibold">
-                Login
-              </button>
-            </form>
-          </div>
+            </div>
+      
+            <div className="flex flex-col items-start w-full gap-2 p-2 mt-2">
+              <label className="font-extrabold">
+                Enter your Password <span className="text-primary">*</span>
+              </label>
+              <input
+                type="password"
+                placeholder="Enter your password"
+                className="w-full p-2 rounded-xl border-2"
+                name="password"
+                value={password}
+                onChange={handelPassword}
+              />
+            </div>
+      
+            <button
+              type="submit"
+              className="bg-blue-700 px-10 py-2 mt-5 rounded-xl text-white text-xl w-full lg:w-auto lg:ml-0 mx-auto"
+            >
+              Login <i className="ri-arrow-right-wide-line"></i>
+            </button>
+          </form>
         </div>
+      </div>
       )}
     </>
   );
