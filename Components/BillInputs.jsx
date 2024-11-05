@@ -8,6 +8,7 @@ import { uploadBill } from "../Store/Action/UserAction";
 import Papa from "papaparse";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
+import InputCustom from "./InputCustom";
 const { RangePicker } = DatePicker;
 
 const BillInputs = () => {
@@ -100,6 +101,7 @@ const BillInputs = () => {
     ) {
       return toast.error("Please fill out all required fields.");
     }
+
     const value = {
       invoiceTo: values.invoiceTo,
       address: values.address,
@@ -113,13 +115,15 @@ const BillInputs = () => {
       endDate: endDateFormatted,
       vehicleNumber: vehiclePartOne + "-" + vehiclePartTwo,
     };
+    console.log(value, 456);
+
     const dets = {
       value,
       tableData,
       transactionData,
       paidAmount,
     };
-    dispatch(uploadBill(dets));
+    // dispatch(uploadBill(dets));
   };
 
   const handleChange = (value) => {
@@ -179,25 +183,53 @@ const BillInputs = () => {
     <Form
       layout={"vertical"}
       form={form}
-      className="w-[90%] max-md:w-full"
+      className="w-[90%] max-md:w-full px-[2vw] flex flex-col items-center justify-center  mx-auto"
       onFinish={onFinish} // Add this line
     >
       <div className="w-full grid grid-cols-3 gap-x-3 max-md:grid-cols-2">
-        <Form.Item label="Invoice To" name="invoiceTo">
+        {/* <Form.Item label="Invoice To" name="invoiceTo">
           <Input placeholder="BLUE ONLY CAR RENTAL" type="text" />
-        </Form.Item>
-        <Form.Item label="Address" name="address">
-          <Input
-            placeholder="UNITED ARAB EMIRATES, Nationality: Saudi Arabia"
+        </Form.Item> */}
+        <Form.Item
+          name="invoiceTo"
+          // label="Invoice To"
+          // rules={[{ required: true, message: "Please input the invoice to!" }]}
+        >
+          <InputCustom
+            title="Invoice To"
+            placeholder="BLUE ONLY CAR RENTAL"
+            name="invoiceTo"
             type="text"
           />
         </Form.Item>
-        <Form.Item label="Invoicer Mobile No." name="mobileNo">
-          <Input placeholder="1234567898" type="number" />
+
+        <Form.Item
+          name="address"
+          // label="Address"
+          // rules={[{ required: true, message: "Please input the address!" }]}
+        >
+          <InputCustom
+            title="Address"
+            placeholder="UNITED ARAB EMIRATES, Nationality: Saudi Arabia"
+            name="address"
+            type="text"
+          />
         </Form.Item>
-        <Form.Item label="Invoice Date" name="invoiceDate">
-        <DatePicker
-        className="w-full"
+
+        <Form.Item name="mobileNo">
+          <InputCustom
+            title="Mobile No."
+            placeholder="1234567898"
+            name="mobileNo"
+            type="number"
+          />
+        </Form.Item>
+        {/* <Form.Item label="Mobile No." name="mobileNo">
+          <Input placeholder="1234567898" type="number" />
+        </Form.Item> */}
+        <Form.Item label="Invoice Date" name="invoiceDate" className="p-2">
+          <DatePicker
+            className="w-full p-2 rounded-xl"
             open={openInvoiceDatePicker}
             onOpenChange={(open) => setOpenInvoiceDatePicker(open)}
             onClick={handleOpenInvoiceDatePicker}
@@ -205,23 +237,33 @@ const BillInputs = () => {
             defaultValue={dayjs()}
           />
         </Form.Item>
-        <Form.Item label="Due Date" name="dueDate">
-        <DatePicker
-        className="w-full"
+        <Form.Item label="Due Date" name="dueDate" className="p-2">
+          <DatePicker
+            className="w-full p-2 rounded-xl"
             open={openDueDatePicker}
             onOpenChange={(open) => setOpenDueDatePicker(open)}
             onClick={handleOpenDueDatePicker}
             placeholder="Select Invoice Date"
-          />        </Form.Item>
-        <Form.Item label="Number of Rental Dates" name="days">
-          <RangePicker  showTime />
+          />{" "}
         </Form.Item>
-        <Form.Item label="Invoice Status" name="invoiceStatus">
+        <Form.Item label="No. of Rental Dates" name="days" className="p-2">
+          <RangePicker className="w-full p-2 rounded-xl" showTime />
+        </Form.Item>
+        <Form.Item
+          label="Invoice Status"
+          name="invoiceStatus"
+          className="p-0 md:flex flex-col w-full"
+        >
           <Select
+            // className="w-full p-2 rounded-xl"
             defaultValue="Paid"
             value={invoiceStatus}
             style={{
               width: "100%",
+              padding: "0.5rem",
+              height: "60px",
+              borderRadius: "0.75rem",
+              // paddingRight:"2rem"
             }}
             onChange={(e) => setinvoiceStatus(e)}
             options={[
@@ -236,12 +278,20 @@ const BillInputs = () => {
             ]}
           />
         </Form.Item>
-        <Form.Item label="Order Status" name="orderStatus">
+        <Form.Item
+          label="Order Status"
+          name="orderStatus"
+          className="p-0 md:flex flex-col w-full"
+        >
           <Select
             defaultValue="Completed"
             value={orderStatus}
             style={{
               width: "100%",
+              padding: "0.5rem",
+              height: "60px",
+              borderRadius: "0.75rem",
+              // paddingRight:"2rem"
             }}
             onChange={(value) => setorderStatus(value)}
             options={[
@@ -256,9 +306,16 @@ const BillInputs = () => {
             ]}
           />
         </Form.Item>
-        <Form.Item label="Vehicle Name" name="vehicleName">
-          <Input placeholder="Vehicle Name" type="text" />
+        <Form.Item name="vehicleName">
+          <InputCustom
+            title={"Vehicle Name"}
+            placeholder={"Vehicle Name"}
+            // placeholder={"UNITED ARAB EMIRATES, Nationality: Saudi Arabia"}
+            name={"vehicleName"}
+            type={"text"}
+          />
         </Form.Item>
+
         <Form.Item
           label="Vehicle Number"
           className="flex items-center"
@@ -287,7 +344,7 @@ const BillInputs = () => {
       <div className="w-full">
         <h1 className="font-semibold text-xl pb-4">Add Bill Details</h1>
         <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-3 max-md:gap-x-2 pb-5">
-          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
+          {/* <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
             <span>Description</span>
             <Input
               placeholder="Demo Product"
@@ -295,8 +352,35 @@ const BillInputs = () => {
               onChange={(e) => setdescription(e.target.value)}
               type="text"
             />
-          </div>
-          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
+          </div> */}
+          <InputCustom
+            title={"Description"}
+            placeholder={"Demo Product"}
+            // placeholder={"UNITED ARAB EMIRATES, Nationality: Saudi Arabia"}
+            // name={"vehicleName"}
+            value={description}
+            onChange={(e) => setdescription(e.target.value)}
+            type={"text"}
+          />
+          <InputCustom
+            title={"Amount"}
+            placeholder={"500"}
+            // placeholder={"UNITED ARAB EMIRATES, Nationality: Saudi Arabia"}
+            // name={"vehicleName"}
+            value={amount}
+            onChange={(e) => setamount(e.target.value)}
+            type={"text"}
+          />
+               <InputCustom
+            title={"Discount"}
+            placeholder={"100"}
+            // placeholder={"UNITED ARAB EMIRATES, Nationality: Saudi Arabia"}
+            // name={"vehicleName"}
+            value={discount}
+            onChange={(e) => setdiscount(e.target.value)}
+            type={"text"}
+          />
+          {/* <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
             <span>Amount</span>
             <Input
               placeholder="500"
@@ -304,8 +388,8 @@ const BillInputs = () => {
               onChange={(e) => setamount(e.target.value)}
               type="number"
             />
-          </div>
-          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
+          </div> */}
+          {/* <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
             <span>Discount</span>
             <Input
               placeholder="100"
@@ -313,11 +397,11 @@ const BillInputs = () => {
               onChange={(e) => setdiscount(e.target.value)}
               type="number"
             />
-          </div>
+          </div> */}
           <Button type="primary" onClick={addBillValues} className="w-fit">
             Add Values
           </Button>
-          <Button type="primary" onClick={openInput} className="w-fit">
+          <Button type="dashed" onClick={openInput} className="w-fit">
             Add CSV
           </Button>
           <input

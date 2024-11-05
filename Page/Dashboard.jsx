@@ -16,12 +16,12 @@ const Dashboard = () => {
     <div className="w-full h-screen">
       <NavBar />
       <div className="w-full h-screen p-10 max-md:p-4">
-        <div className="flex items-center justify-between px-[8vh]">
+        <div className="flex items-center justify-between px-[8vh] max-md:w-full max-md:px-[0vw] max-md:py-4">
         <h1 className="text-3xl font-semibold ">Dashboard</h1>
       
         <NavLink
         to={"/add/bill"}
-            className="text-lg border-black bg-blue-500 text-white p-1 px-4 rounded-md"
+            className="text-lg border-black bg-blue-500 text-white p-1 px-4 rounded-md max-md:text-base text-nowrap"
           >
             Add Bill
             <i className="ri-add-line"></i>
