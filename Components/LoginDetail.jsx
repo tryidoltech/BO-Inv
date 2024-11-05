@@ -104,7 +104,7 @@ const LoginUser = () => {
           <CircularProgress />
         </div>
       ) : (
-        <div className="w-full  flex flex-col lg:flex-row min-h-screen items-center lg:items-stretch justify-between">
+        <div className="w-full  flex max-md:flex-col min-h-screen items-center justify-between max-md:justify-center">
         {/* Header */}
         {/* <div className="w-full absolute top-0 left-0 flex items-center justify-between px-4 md:px-[10vw] py-2">
           <img src="/Logo.png" className="h-10" alt="Logo" />
@@ -117,7 +117,7 @@ const LoginUser = () => {
         </div> */}
       
         {/* Image Section */}
-        <div className="w-full lg:w-1/2 flex items-center justify-center mt-20 px-4 lg:p-0 order-1">
+        <div className="w-full  lg:w-1/2 flex items-center justify-center mt-20 px-4 lg:p-0 order-1">
           <img
             src="/login.jpg"
             alt="Login Illustration"
@@ -126,7 +126,7 @@ const LoginUser = () => {
         </div>
       
         {/* Form Section */}
-        <div className="w-full lg:w-1/2 flex flex-col justify-center  items-center lg:items-start p-6 lg:p-12 order-2">
+        <div className="w-full  lg:w-1/2 flex flex-col justify-center  items-center lg:items-start p-6 lg:p-12 order-2">
           <form onSubmit={formSubmit} className="w-full max-w-md flex flex-col justify-center">
             <h1 className="text-center lg:text-left flex items-center text-primary text-2xl md:text-4xl font-extrabold">
               <Icon
