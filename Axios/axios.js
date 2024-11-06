@@ -3,7 +3,7 @@ import axios from "axios";
 // Create an axios instance
 const instance = axios.create({
   // Set your base URL (adjust based on production/development)
- baseURL:"https://billbackend.vercel.app/api/v1/user",
+ baseURL:"https://blueonlyinv.onrender.com/api/v1/user",
 //  baseURL:"http://localhost:5001/api/v1/user",
   withCredentials: true,
 });
