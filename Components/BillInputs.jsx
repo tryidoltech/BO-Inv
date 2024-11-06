@@ -29,8 +29,9 @@ const BillInputs = () => {
   const [vehiclePartOne, setVehiclePartOne] = useState("");
   const [vehiclePartTwo, setVehiclePartTwo] = useState("");
   const [openInvoiceDatePicker, setOpenInvoiceDatePicker] = useState(false);
+  // const [, set] = useState(second)
   const [openDueDatePicker, setOpenDueDatePicker] = useState(false);
-
+  const [openDate, setopenDate] = useState("");
   const handleOpenInvoiceDatePicker = () => setOpenInvoiceDatePicker(true);
   const handleOpenDueDatePicker = () => setOpenDueDatePicker(true);
   const navigate = useNavigate();
@@ -186,7 +187,7 @@ const BillInputs = () => {
       className="w-[90%] max-md:w-full px-[2vw] flex flex-col items-center justify-center  mx-auto"
       onFinish={onFinish} // Add this line
     >
-      <div className="w-full grid grid-cols-3 gap-x-3 max-md:grid-cols-1">
+      <div className="w-full grid grid-cols-2 gap-x-3 max-md:grid-cols-1 ">
         {/* <Form.Item label="Invoice To" name="invoiceTo">
           <Input placeholder="BLUE ONLY CAR RENTAL" type="text" />
         </Form.Item> */}
@@ -440,12 +441,27 @@ const BillInputs = () => {
       </div>
       <div className="w-full ">
         <h1 className="font-semibold text-xl pb-4">Add Transaction Details</h1>
-        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-1 max-md:gap-x-3">
-          <Form.Item label="Date" className="w-full" name="transactionDate">
+        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-1 max-md:gap-3 gap-2">
+          {/* <Form.Item label="Date" className="w-full" name="transactionDate">
             <Input
               value={transactionDate}
               onChange={(e) => settransactionDate(e.target.value)}
               type="date"
+            />
+          </Form.Item> */}
+          <Form.Item label="Date" name="Date" className="p-2 w-full">
+            <DatePicker
+              className="w-full p-2 rounded-xl"
+              open={openDate}
+              value={transactionDate}
+              onChange={(date) => {
+                // Format the date to YYYY-MM-DD
+                const formattedDate = dayjs(date).format("YYYY-MM-DD");
+                settransactionDate(formattedDate);
+                setopenDate(false);
+              }}
+              onClick={() => setopenDate(true)}
+              placeholder="Select Invoice Date"
             />
           </Form.Item>
           <Form.Item
@@ -495,7 +511,7 @@ const BillInputs = () => {
               ]}
             />
           </Form.Item>
-          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4 max-md:pl-0">
+          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4 max-md:pl-0 mt-2">
             <span>Amount</span>
             <Input
               onChange={(e) => settransAmount(e.target.value)}
@@ -507,7 +523,7 @@ const BillInputs = () => {
           <Button
             type="primary"
             onClick={addTransactionValues}
-            className="w-fit mr-auto mt-4"
+            className="w-fit max-md:mr-auto max-md:mt-4"
           >
             Add Values
           </Button>
@@ -522,7 +538,11 @@ const BillInputs = () => {
         {...buttonItemLayout}
         className="max-md:translate-x-1/3 max-md:mt-4 max-md:text-2xl"
       >
-        <Button type="primary" className="text-xl px-10 py-5" htmlType="submit">
+        <Button
+          type="primary"
+          className="max-md:text-xl max-md:px-10 max-md:py-5 text-2xl p-10 py-4"
+          htmlType="submit"
+        >
           Submit
         </Button>
       </Form.Item>

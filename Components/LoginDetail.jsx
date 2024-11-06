@@ -135,7 +135,7 @@ const LoginUser = () => {
               />
               Sign in to your account
             </h1>
-            <h3 className="w-full mt-4 text-center lg:text-left lightF">
+            <h3 className="w-full mt-4 text-left lightF max-md:ml-[2vw]">
               Enter your email and password to sign in to your account.
             </h3>
       
