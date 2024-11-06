@@ -186,7 +186,7 @@ const BillInputs = () => {
       className="w-[90%] max-md:w-full px-[2vw] flex flex-col items-center justify-center  mx-auto"
       onFinish={onFinish} // Add this line
     >
-      <div className="w-full grid grid-cols-3 gap-x-3 max-md:grid-cols-2">
+      <div className="w-full grid grid-cols-3 gap-x-3 max-md:grid-cols-1">
         {/* <Form.Item label="Invoice To" name="invoiceTo">
           <Input placeholder="BLUE ONLY CAR RENTAL" type="text" />
         </Form.Item> */}
@@ -343,7 +343,7 @@ const BillInputs = () => {
       </div>
       <div className="w-full">
         <h1 className="font-semibold text-xl pb-4">Add Bill Details</h1>
-        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-3 max-md:gap-x-2 pb-5">
+        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-1 max-md:gap-x-2 pb-5 max-md:place-items-start">
           {/* <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
             <span>Description</span>
             <Input
@@ -371,7 +371,7 @@ const BillInputs = () => {
             onChange={(e) => setamount(e.target.value)}
             type={"text"}
           />
-               <InputCustom
+          <InputCustom
             title={"Discount"}
             placeholder={"100"}
             // placeholder={"UNITED ARAB EMIRATES, Nationality: Saudi Arabia"}
@@ -398,10 +398,18 @@ const BillInputs = () => {
               type="number"
             />
           </div> */}
-          <Button type="primary" onClick={addBillValues} className="w-fit">
+          <Button
+            type="primary"
+            onClick={addBillValues}
+            className="w-fit max-md:ml-2"
+          >
             Add Values
           </Button>
-          <Button type="dashed" onClick={openInput} className="w-fit">
+          <Button
+            type="dashed"
+            onClick={openInput}
+            className="w-fit max-md:ml-2 max-md:mt-2"
+          >
             Add CSV
           </Button>
           <input
@@ -432,15 +440,19 @@ const BillInputs = () => {
       </div>
       <div className="w-full ">
         <h1 className="font-semibold text-xl pb-4">Add Transaction Details</h1>
-        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-2 max-md:gap-x-3">
-          <Form.Item label="Date" name="transactionDate">
+        <div className="w-full  grid grid-cols-5  place-items-center justify-items-center max-md:grid-cols-1 max-md:gap-x-3">
+          <Form.Item label="Date" className="w-full" name="transactionDate">
             <Input
               value={transactionDate}
               onChange={(e) => settransactionDate(e.target.value)}
               type="date"
             />
           </Form.Item>
-          <Form.Item label="Payment Method" name="paymentMethod">
+          <Form.Item
+            label="Payment Method"
+            className="w-full"
+            name="paymentMethod"
+          >
             <Select
               // defaultValue="Cash"
               style={{
@@ -448,6 +460,8 @@ const BillInputs = () => {
               }}
               value={method}
               onChange={(e) => setmethod(e)}
+              // defaultValue={"Select "}
+              defaultValue={"Cash"}
               options={[
                 {
                   value: "Cash",
@@ -472,6 +486,7 @@ const BillInputs = () => {
               }}
               value={category}
               onChange={(e) => setcategory(e)}
+              defaultValue={"Rental Income"}
               options={[
                 {
                   value: "Rental Income",
@@ -480,18 +495,19 @@ const BillInputs = () => {
               ]}
             />
           </Form.Item>
-          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4">
+          <div className="flex flex-col items-start justify-start gap-2 w-full h-full pl-4 max-md:pl-0">
             <span>Amount</span>
             <Input
               onChange={(e) => settransAmount(e.target.value)}
               value={transAmount}
               type="number"
+              placeholder="Enter the amount"
             />
           </div>
           <Button
             type="primary"
             onClick={addTransactionValues}
-            className="w-fit"
+            className="w-fit mr-auto mt-4"
           >
             Add Values
           </Button>
@@ -506,7 +522,7 @@ const BillInputs = () => {
         {...buttonItemLayout}
         className="max-md:translate-x-1/3 max-md:mt-4 max-md:text-2xl"
       >
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" className="text-xl px-10 py-5" htmlType="submit">
           Submit
         </Button>
       </Form.Item>
