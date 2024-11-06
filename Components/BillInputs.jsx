@@ -77,7 +77,7 @@ const BillInputs = () => {
   const dispatch = useDispatch();
   const [invoiceDate, setinvoiceDate] = useState(dayjs());
   const [dueDate, setdueDate] = useState(dayjs());
-  const [addres, setaddres] = useState("UNITED ARAB EMIRATES, Nationality: Saudi Arabia")
+  const [addres, setaddres] = useState("UNITED ARAB EMIRATES, Nationality")
   const onFinish = (values) => {
     const startDate = values.days[0].$d;
     const endDate = values.days[1].$d;
@@ -229,9 +229,13 @@ console.log(addres);
         {/* <Form.Item label="Mobile No." name="mobileNo">
           <Input placeholder="1234567898" type="number" />
         </Form.Item> */}
-        <Form.Item label="Invoice Date" name="invoiceDate" className="p-2">
+        {/* <Form.Item label="Invoice Date" name="invoiceDate" className="p-2"> */}
+        <div className="flex flex-col gap-3 p-1">
+          <label >
+            Invoice Date
+          </label>
           <DatePicker
-            className="w-full p-2 rounded-xl"
+            className="w-full p-2 rounded-xl h-fit"
             open={openInvoiceDatePicker}
             value={invoiceDate}
             onChange={(date) => {
@@ -242,9 +246,11 @@ console.log(addres);
             }}
             onClick={handleOpenInvoiceDatePicker}
             placeholder="Select Invoice Date"
+            
             // defaultValue={dayjs()}
           />
-        </Form.Item>
+        </div>
+        {/* </Form.Item> */}
         <Form.Item label="Due Date" name="dueDate" className="p-2">
           <DatePicker
             className="w-full p-2 rounded-xl"
