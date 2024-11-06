@@ -75,7 +75,9 @@ const BillInputs = () => {
     settransAmount("");
   };
   const dispatch = useDispatch();
-
+  const [invoiceDate, setinvoiceDate] = useState(dayjs());
+  const [dueDate, setdueDate] = useState(dayjs());
+  const [addres, setaddres] = useState("UNITED ARAB EMIRATES, Nationality: Saudi Arabia")
   const onFinish = (values) => {
     const startDate = values.days[0].$d;
     const endDate = values.days[1].$d;
@@ -92,23 +94,24 @@ const BillInputs = () => {
     const endDateFormatted = endDate.toLocaleString("en-GB", options);
     if (
       !values.invoiceTo ||
-      !values.address ||
+      !addres ||
       !values.mobileNo ||
-      !values.invoiceDate ||
-      !values.dueDate ||
+      !invoiceDate ||
+      !dueDate ||
       !values.vehicleName ||
       !vehiclePartOne ||
       !vehiclePartTwo
     ) {
       return toast.error("Please fill out all required fields.");
     }
+    // console.log(values);
 
     const value = {
       invoiceTo: values.invoiceTo,
-      address: values.address,
+      address: addres,
       mobileNo: values.mobileNo,
-      invoiceDate: values.invoiceDate,
-      dueDate: values.dueDate,
+      invoiceDate: invoiceDate,
+      dueDate: dueDate,
       invoiceStatus: invoiceStatus,
       orderStatus: orderStatus,
       vehicleName: values.vehicleName,
@@ -124,7 +127,7 @@ const BillInputs = () => {
       transactionData,
       paidAmount,
     };
-    // dispatch(uploadBill(dets));
+    dispatch(uploadBill(dets));
   };
 
   const handleChange = (value) => {
@@ -180,6 +183,8 @@ const BillInputs = () => {
     invoice.current.click();
     console.log(invoice.current);
   };
+console.log(addres);
+
   return (
     <Form
       layout={"vertical"}
@@ -204,18 +209,14 @@ const BillInputs = () => {
           />
         </Form.Item>
 
-        <Form.Item
-          name="address"
-          // label="Address"
-          // rules={[{ required: true, message: "Please input the address!" }]}
-        >
           <InputCustom
             title="Address"
-            placeholder="UNITED ARAB EMIRATES, Nationality: Saudi Arabia"
-            name="address"
+            // val="UNITED ARAB EMIRATES, Nationality: Saudi Arabia"
+            value={addres}
+            onChange={(e)=>setaddres(e.target.value)}
+            // name="address"
             type="text"
           />
-        </Form.Item>
 
         <Form.Item name="mobileNo">
           <InputCustom
@@ -232,20 +233,33 @@ const BillInputs = () => {
           <DatePicker
             className="w-full p-2 rounded-xl"
             open={openInvoiceDatePicker}
-            onOpenChange={(open) => setOpenInvoiceDatePicker(open)}
+            value={invoiceDate}
+            onChange={(date) => {
+              const formattedDate = dayjs(date).format("YYYY-MM-DD");
+
+              setinvoiceDate(formattedDate);
+              setOpenInvoiceDatePicker(false);
+            }}
             onClick={handleOpenInvoiceDatePicker}
             placeholder="Select Invoice Date"
-            defaultValue={dayjs()}
+            // defaultValue={dayjs()}
           />
         </Form.Item>
         <Form.Item label="Due Date" name="dueDate" className="p-2">
           <DatePicker
             className="w-full p-2 rounded-xl"
             open={openDueDatePicker}
-            onOpenChange={(open) => setOpenDueDatePicker(open)}
-            onClick={handleOpenDueDatePicker}
+            value={dueDate}
+            onChange={(date) => {
+              const formattedDate = dayjs(date).format("YYYY-MM-DD");
+
+              setdueDate(formattedDate);
+              setOpenDueDatePicker(false);
+            }}
+            onClick={() => setOpenDueDatePicker(true)}
             placeholder="Select Invoice Date"
-          />{" "}
+            // defaultValue={dayjs()}
+          />
         </Form.Item>
         <Form.Item label="No. of Rental Dates" name="days" className="p-2">
           <RangePicker className="w-full p-2 rounded-xl" showTime />
